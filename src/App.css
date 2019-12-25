@@ -15,3 +15,12 @@
   color: red;
   padding: 10px 15px;
 }
+
+.blog-entry{
+  border: 1px solid blacK;
+  margin: 2px;
+  padding: 5px;
+}
+.blog-entry .title{
+  cursor: pointer;
+}
