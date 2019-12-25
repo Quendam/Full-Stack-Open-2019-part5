@@ -6,6 +6,7 @@ import blogService from './services/blogs'
 import UserInfo from './components/UserInfo'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import './App.css'
 
 const App = () => {
@@ -65,7 +66,7 @@ const App = () => {
   const handleAddBlog = async (blog) => {
     const response = await blogService.create(blog)
 
-    if(response.status == 201){
+    if(response.status === 201){
       blogService
       .getAll()
       .then(receivedBlogs => setBlogs(receivedBlogs))
@@ -131,9 +132,13 @@ const App = () => {
         user={user}
         onLogout={handleLogout} 
       />
-      <BlogForm 
-        onCreate={handleAddBlog}
-      />
+      <Togglable 
+        buttonLabel='new note'
+      >
+        <BlogForm 
+          onCreate={handleAddBlog}
+        />
+      </Togglable>
       {blogList}
     </div>
   )
