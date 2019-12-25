@@ -5,12 +5,16 @@ import loginService from './services/login'
 import blogService from './services/blogs'
 import UserInfo from './components/UserInfo'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
+import './App.css'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
+  const [infoMessage, setInfoMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleLogin = async () => {
     try{
@@ -28,19 +32,27 @@ const App = () => {
         setUser(user)
         setUsername('')
         setPassword('')
-        // Info message here?
-        console.log("Token", user);
+
+        setInfoMessage(`${user.name} has logged in`)
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
         
       }else{
         setUser(null)
-        // Error message here?
-        console.log("no token", user);
-        
+
+        setErrorMessage('wrong username or password')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       }      
     } catch(execption) {
       setUser(null)
-      // Error message here
-      console.log("Exception", execption);
+
+      setErrorMessage('Error while processing login')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       
     } 
   }
@@ -51,15 +63,22 @@ const App = () => {
   }
 
   const handleAddBlog = async (blog) => {
-    console.log("testing", blog)
     const response = await blogService.create(blog)
 
     if(response.status == 201){
       blogService
       .getAll()
       .then(receivedBlogs => setBlogs(receivedBlogs))
+
+      setInfoMessage(`a new blog ${blog.title} by ${blog.author} added`)
+      setTimeout(() => {
+        setInfoMessage(null)
+      }, 5000)
     }else {
-      // Error message here
+      setErrorMessage('Error while adding blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -78,11 +97,12 @@ const App = () => {
     }
   }, [])
 
+
   if(!user){
     return (
       <div>
         <h2>Login to application</h2>
-
+        {errorMessage && <Notification type='error' message={errorMessage} />}
         <LoginForm
           username={username}
           password={password}
@@ -104,6 +124,9 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
+      {errorMessage && <Notification type='error' message={errorMessage} />}
+      {infoMessage && <Notification type='info' message={infoMessage} />}
+
       <UserInfo 
         user={user}
         onLogout={handleLogout} 
