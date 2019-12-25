@@ -18,6 +18,11 @@ const App = () => {
       )  
 
       if(user.token){
+
+        window.localStorage.setItem(
+          'loggedBlogappUser', JSON.stringify(user)
+        ) 
+
         setUser(user)
         setUsername('')
         setPassword('')
@@ -36,12 +41,25 @@ const App = () => {
       console.log("Exception", execption);
       
     } 
-  } 
+  }
+  const handleLogout = () => {
+    setUser(null)
+    window.localStorage.removeItem('loggedBlogappUser')
+  }
 
   useEffect(() => {
     blogService
       .getAll()
       .then(receivedBlogs => setBlogs(receivedBlogs))
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      //noteService.setToken(user.token)
+    }
   }, [])
 
   if(!user){
@@ -70,7 +88,10 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
-      <UserInfo user={user} />
+      <UserInfo 
+        user={user}
+        onLogout={handleLogout} 
+      />
       {blogList}
     </div>
   )
