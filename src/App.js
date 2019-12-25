@@ -67,9 +67,8 @@ const App = () => {
     const response = await blogService.create(blog)
 
     if(response.status === 201){
-      blogService
-      .getAll()
-      .then(receivedBlogs => setBlogs(receivedBlogs))
+      const receivedBlogs = blogService.getAll()
+      setBlogs(receivedBlogs)
 
       setInfoMessage(`a new blog ${blog.title} by ${blog.author} added`)
       setTimeout(() => {
@@ -80,6 +79,32 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
+    }
+  }
+
+  const handleAddLike = async (blog) => {
+
+    blog.likes++
+    blog.user = blog.user.id
+    blog.author = blog.author || "";
+    try{
+      const response = await blogService.update(blog)
+      if(response.status === 200){
+        const receivedBlogs = await blogService.getAll()
+        setBlogs(receivedBlogs)
+  
+        setInfoMessage(`like addd to blog ${blog.title}`)
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
+      }else {
+        setErrorMessage('Error while adding like')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }catch(execption){
+      console.log("error adding like", execption.response)
     }
   }
 
@@ -119,6 +144,7 @@ const App = () => {
     <Blog
       key={entry.id}
       blog={entry}
+      onLike={handleAddLike}
     /> 
   )
 
