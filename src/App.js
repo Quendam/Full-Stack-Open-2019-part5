@@ -4,6 +4,7 @@ import Blog from './components/Blog'
 import loginService from './services/login'
 import blogService from './services/blogs'
 import UserInfo from './components/UserInfo'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -23,6 +24,7 @@ const App = () => {
           'loggedBlogappUser', JSON.stringify(user)
         ) 
 
+        blogService.setToken(user.token)
         setUser(user)
         setUsername('')
         setPassword('')
@@ -42,9 +44,23 @@ const App = () => {
       
     } 
   }
+
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogappUser')
+  }
+
+  const handleAddBlog = async (blog) => {
+    console.log("testing", blog)
+    const response = await blogService.create(blog)
+
+    if(response.status == 201){
+      blogService
+      .getAll()
+      .then(receivedBlogs => setBlogs(receivedBlogs))
+    }else {
+      // Error message here
+    }
   }
 
   useEffect(() => {
@@ -58,7 +74,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      //noteService.setToken(user.token)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -91,6 +107,9 @@ const App = () => {
       <UserInfo 
         user={user}
         onLogout={handleLogout} 
+      />
+      <BlogForm 
+        onCreate={handleAddBlog}
       />
       {blogList}
     </div>
