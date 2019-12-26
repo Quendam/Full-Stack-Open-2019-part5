@@ -1,28 +1,34 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useField } from '../hooks'
 
 const BlogForm = ({ onCreate }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('')
+  const author = useField('')
+  const url = useField('')
 
   const handleAddBlog = () => {
     onCreate({
-      title: title,
-      author: author,
-      url: url,
+      title: title.value,
+      author: author.value,
+      url: url.value,
     })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    handleResetFields()
+  }
+
+  const handleResetFields = () => {
+    title.reset()
+    author.reset()
+    url.reset()
   }
 
   return(
     <div>
       <h1>Create</h1>
-      Title: <input type='text' value={title} onChange={({ target }) => setTitle(target.value)} /><br/>
-      Author: <input type='text' value={author} onChange={({ target }) => setAuthor(target.value)} /><br/>
-      Url: <input type='text' value={url} onChange={({ target }) => setUrl(target.value)} /><br/>
+      Title: <input {...title} type='text' /><br/>
+      Author: <input {...author} type='text' /><br/>
+      Url: <input {...url} type='text'/><br/>
       <button onClick={handleAddBlog}>Create</button>
+      <button onClick={handleResetFields}>Reset</button>
     </div>
   )
 }
