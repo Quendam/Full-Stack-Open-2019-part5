@@ -10,17 +10,15 @@ import Togglable from './components/Togglable'
 import './App.css'
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [infoMessage, setInfoMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleLogin = async () => {
+  const handleLogin = async (username, password) => {
     try{
       const user = await loginService.login(
-        username, password,
+        username, password
       )
 
       if(user.token){
@@ -31,8 +29,6 @@ const App = () => {
 
         blogService.setToken(user.token)
         setUser(user)
-        setUsername('')
-        setPassword('')
 
         setInfoMessage(`${user.name} has logged in`)
         setTimeout(() => {
@@ -154,10 +150,6 @@ const App = () => {
         <h2>Login to application</h2>
         {errorMessage && <Notification type='error' message={errorMessage} />}
         <LoginForm
-          username={username}
-          password={password}
-          onUsernameChange={({ target }) => setUsername(target.value)}
-          onPasswordChange={({ target }) => setPassword(target.value)}
           onLogin={handleLogin}
         />
       </div>

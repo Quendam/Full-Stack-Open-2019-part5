@@ -1,19 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useField } from '../hooks'
 
-const LoginForm = ({ username, onUsernameChange, password, onPasswordChange, onLogin }) => (
-  <div>
-    username <input type='text' value={username} onChange={onUsernameChange} /> <br/>
-    passsword <input type='password' value={password} onChange={onPasswordChange} /> <br/>
-    <button onClick={onLogin}>Login</button>
-  </div>
-)
+const LoginForm = ({ onLogin }) => {
+  const username = useField('')
+  const password = useField('')
+  const handleLogin = () => {
+    onLogin(username.value, password.value)
+  }
+
+  return (
+    <div>
+      username <input {...username} type='text' /> <br/>
+      passsword <input {...password} type='password' /> <br/>
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  )
+}
 
 LoginForm.propTypes = {
-  username: PropTypes.string.isRequired,
-  onUsernameChange: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired,
-  onPasswordChange: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired
 }
 
