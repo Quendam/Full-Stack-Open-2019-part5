@@ -108,6 +108,30 @@ const App = () => {
     }
   }
 
+  const handleDeleteBlog = async (blog) => {
+
+    try{
+      const response = await blogService.remove(blog)
+
+      if(response.status === 204){
+        const receivedBlogs = await blogService.getAll()
+        setBlogs(receivedBlogs)
+  
+        setInfoMessage(`blog ${blog.title} removed`)
+        setTimeout(() => {
+          setInfoMessage(null)
+        }, 5000)
+      }else {
+        setErrorMessage('Error while removing blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }catch(execption){
+      console.log("error removing blog", execption.response)
+    }
+  }
+
   useEffect(() => {
     blogService
       .getAll()
@@ -145,6 +169,7 @@ const App = () => {
       key={entry.id}
       blog={entry}
       onLike={handleAddLike}
+      onDelete={handleDeleteBlog}
     /> 
   )
 
@@ -159,7 +184,7 @@ const App = () => {
         onLogout={handleLogout} 
       />
       <Togglable 
-        buttonLabel='new note'
+        buttonLabel='new blog'
       >
         <BlogForm 
           onCreate={handleAddBlog}
