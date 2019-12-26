@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import { useField } from '../hooks'
 
 const LoginForm = ({ onLogin }) => {
-  const username = useField('')
-  const password = useField('')
+  const { reset: resetUsername, ...username } = useField('')
+  const { reset: resetPassword, ...password } = useField('')
   const handleLogin = () => {
     onLogin(username.value, password.value)
+    resetUsername('')
+    resetPassword('')
   }
 
   return (

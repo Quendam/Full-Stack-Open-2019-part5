@@ -2,9 +2,9 @@ import React from 'react'
 import { useField } from '../hooks'
 
 const BlogForm = ({ onCreate }) => {
-  const title = useField('')
-  const author = useField('')
-  const url = useField('')
+  const { reset: titleReset, ...title } = useField('')
+  const { reset: authorReset, ...author } = useField('')
+  const { reset: urlReset, ...url } = useField('')
 
   const handleAddBlog = () => {
     onCreate({
@@ -16,9 +16,9 @@ const BlogForm = ({ onCreate }) => {
   }
 
   const handleResetFields = () => {
-    title.reset()
-    author.reset()
-    url.reset()
+    titleReset()
+    authorReset()
+    urlReset()
   }
 
   return(
@@ -27,6 +27,7 @@ const BlogForm = ({ onCreate }) => {
       Title: <input {...title} type='text' /><br/>
       Author: <input {...author} type='text' /><br/>
       Url: <input {...url} type='text'/><br/>
+
       <button onClick={handleAddBlog}>Create</button>
       <button onClick={handleResetFields}>Reset</button>
     </div>
