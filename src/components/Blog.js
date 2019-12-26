@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 const Blog = ({ blog, onLike, onDelete, user }) => {
   const [open, setOpen] = useState(false)
-  const ownBlog = user.username === blog.user.username;
-  
-  const detailsOpen = {display: open ? '' : 'none'}
+  const ownBlog = user.username === blog.user.username
+
+  const detailsOpen = { display: open ? '' : 'none' }
   const toggleOpen = () => setOpen(!open)
   const handleLikePress = () => {
     onLike(blog)
@@ -18,7 +18,7 @@ const Blog = ({ blog, onLike, onDelete, user }) => {
 
   return(
     <div className='blog-entry'>
-      <div onClick={toggleOpen} className='title'> 
+      <div onClick={toggleOpen} className='title'>
         {blog.title} {blog.author}
       </div>
       <div style={detailsOpen} className='details'>

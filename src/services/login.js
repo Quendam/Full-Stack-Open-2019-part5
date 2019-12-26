@@ -8,8 +8,8 @@ const login = async (username, password) => {
       username: username,
       password: password
     })
-  
-    return response.data;
+
+    return response.data
 
   } catch (exception){
     return exception.response.data

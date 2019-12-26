@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const LoginForm = ({username, onUsernameChange, password, onPasswordChange, onLogin}) => (
+const LoginForm = ({ username, onUsernameChange, password, onPasswordChange, onLogin }) => (
   <div>
     username <input type='text' value={username} onChange={onUsernameChange} /> <br/>
     passsword <input type='password' value={password} onChange={onPasswordChange} /> <br/>

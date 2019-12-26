@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UserInfo = ({user, onLogout}) => (
+const UserInfo = ({ user, onLogout }) => (
   <p>
     {`${user.name} logged in` }
     <button onClick={onLogout}>logout</button>

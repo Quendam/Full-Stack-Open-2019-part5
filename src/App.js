@@ -21,13 +21,13 @@ const App = () => {
     try{
       const user = await loginService.login(
         username, password,
-      )  
+      )
 
       if(user.token){
 
         window.localStorage.setItem(
           'loggedBlogappUser', JSON.stringify(user)
-        ) 
+        )
 
         blogService.setToken(user.token)
         setUser(user)
@@ -38,7 +38,7 @@ const App = () => {
         setTimeout(() => {
           setInfoMessage(null)
         }, 5000)
-        
+
       }else{
         setUser(null)
 
@@ -46,7 +46,7 @@ const App = () => {
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-      }      
+      }
     } catch(execption) {
       setUser(null)
 
@@ -54,8 +54,8 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      
-    } 
+
+    }
   }
 
   const handleLogout = () => {
@@ -86,13 +86,13 @@ const App = () => {
 
     blog.likes++
     blog.user = blog.user.id
-    blog.author = blog.author || "";
+    blog.author = blog.author || ''
     try{
       const response = await blogService.update(blog)
       if(response.status === 200){
         const receivedBlogs = await blogService.getAll()
         setBlogs(receivedBlogs)
-  
+
         setInfoMessage(`like addd to blog ${blog.title}`)
         setTimeout(() => {
           setInfoMessage(null)
@@ -104,7 +104,7 @@ const App = () => {
         }, 5000)
       }
     }catch(execption){
-      console.log("error adding like", execption.response)
+      console.log('error adding like', execption.response)
     }
   }
 
@@ -116,7 +116,7 @@ const App = () => {
       if(response.status === 204){
         const receivedBlogs = await blogService.getAll()
         setBlogs(receivedBlogs)
-  
+
         setInfoMessage(`blog ${blog.title} removed`)
         setTimeout(() => {
           setInfoMessage(null)
@@ -128,7 +128,7 @@ const App = () => {
         }, 5000)
       }
     }catch(execption){
-      console.log("error removing blog", execption.response)
+      console.log('error removing blog', execption.response)
     }
   }
 
@@ -156,22 +156,22 @@ const App = () => {
         <LoginForm
           username={username}
           password={password}
-          onUsernameChange={({target}) => setUsername(target.value)}
-          onPasswordChange={({target}) => setPassword(target.value)}
+          onUsernameChange={({ target }) => setUsername(target.value)}
+          onPasswordChange={({ target }) => setPassword(target.value)}
           onLogin={handleLogin}
         />
       </div>
     )
   }
 
-  const blogList = blogs.map(entry => 
+  const blogList = blogs.map(entry =>
     <Blog
       key={entry.id}
       blog={entry}
       onLike={handleAddLike}
       onDelete={handleDeleteBlog}
       user={user}
-    /> 
+    />
   )
 
   return (
@@ -180,14 +180,14 @@ const App = () => {
       {errorMessage && <Notification type='error' message={errorMessage} />}
       {infoMessage && <Notification type='info' message={infoMessage} />}
 
-      <UserInfo 
+      <UserInfo
         user={user}
-        onLogout={handleLogout} 
+        onLogout={handleLogout}
       />
-      <Togglable 
+      <Togglable
         buttonLabel='new blog'
       >
-        <BlogForm 
+        <BlogForm
           onCreate={handleAddBlog}
         />
       </Togglable>
