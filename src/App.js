@@ -67,7 +67,7 @@ const App = () => {
     const response = await blogService.create(blog)
 
     if(response.status === 201){
-      const receivedBlogs = blogService.getAll()
+      const receivedBlogs = await blogService.getAll()
       setBlogs(receivedBlogs)
 
       setInfoMessage(`a new blog ${blog.title} by ${blog.author} added`)
@@ -170,6 +170,7 @@ const App = () => {
       blog={entry}
       onLike={handleAddLike}
       onDelete={handleDeleteBlog}
+      user={user}
     /> 
   )
 
